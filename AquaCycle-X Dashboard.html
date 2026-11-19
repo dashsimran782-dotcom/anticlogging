@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AquaCycle-X Dashboard</title>
+<style>
+:root{--bg:#f3f6fa;--card:#fff;--ink:#0f2347;--mut:#5d6b85;--line:#dde4ee;--blue:#1769e0;--blue-s:#e6f0fd;--green:#12935a;--green-s:#e2f6ec;--yel:#a76b00;--yel-s:#fff3d6;--red:#c62f2f;--red-s:#fde8e8;--side:#0c2145;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1424;--card:#121f36;--ink:#e6edf8;--mut:#93a3bf;--line:#243452;--blue:#5aa0ff;--blue-s:#183259;--green:#3ccf8e;--green-s:#12372b;--yel:#f0b54a;--yel-s:#3b2f10;--red:#ff7b7b;--red-s:#3d1a1d;--side:#08142b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1424;--card:#121f36;--ink:#e6edf8;--mut:#93a3bf;--line:#243452;--blue:#5aa0ff;--blue-s:#183259;--green:#3ccf8e;--green-s:#12372b;--yel:#f0b54a;--yel-s:#3b2f10;--red:#ff7b7b;--red-s:#3d1a1d;--side:#08142b;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.app{display:grid;grid-template-columns:168px 1fr;min-height:100vh}
+nav{background:var(--side);color:#cfd9ec;padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+nav .logo{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:17px;margin-bottom:14px}
+nav a{padding:9px 10px;border-radius:6px;color:#cfd9ec;text-decoration:none;font-size:13px}
+nav a.on{background:var(--blue);color:#fff}nav a:hover{background:#1a3563}
+nav small{margin-top:auto;color:#8ea0c3;font-size:11px}
+main{padding:14px;min-width:0}
+header{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:12px}
+header h1{margin:0;font-size:20px}header p{margin:0;color:var(--mut);font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--blue-s);color:var(--blue)}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.chip.g{background:var(--green-s);color:var(--green)}.chip.y{background:var(--yel-s);color:var(--yel)}.chip.r{background:var(--red-s);color:var(--red)}
+.chip.plain::before{display:none}
+.grid{display:grid;gap:12px;margin-bottom:12px}
+.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.card h2{margin:0 0 8px;font-size:14px}
+.big{font-size:28px;font-weight:700;line-height:1.1}.big small{font-size:14px;color:var(--mut);font-weight:600}
+.row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:12.5px;border-bottom:1px dashed var(--line)}
+.row:last-child{border:0}.row span:first-child{color:var(--mut)}.row b{text-align:right}
+.bar{height:10px;background:var(--line);border-radius:5px;position:relative;overflow:hidden;margin:8px 0 2px}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--blue);width:0}
+.bar u{position:absolute;top:0;bottom:0;width:2px;background:var(--yel)}.bar u.c{background:var(--red)}
+svg.sp{width:100%;height:70px;display:block;margin-top:6px}
+svg.sp polyline{fill:none;stroke:var(--blue);stroke-width:1.6}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{font:600 12px inherit;font-family:inherit;padding:8px 12px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+button.p{background:var(--blue);border-color:var(--blue);color:#fff}button.d{color:var(--red);border-color:var(--red)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.tw{overflow-x:auto;max-height:230px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}th{position:sticky;top:0;background:var(--card);color:var(--mut)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.st{padding:6px 9px;border:1px solid var(--line);border-radius:6px;font-size:12px;color:var(--mut)}
+.st.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}.ar{color:var(--mut)}
+.al{list-style:none;margin:0;padding:0;max-height:190px;overflow:auto}
+.al li{display:flex;gap:8px;padding:5px 8px;border-radius:5px;margin-bottom:4px;font-size:12.5px}
+.al .g{background:var(--green-s);color:var(--green)}.al .y{background:var(--yel-s);color:var(--yel)}.al .r{background:var(--red-s);color:var(--red)}
+.al time{margin-left:auto;opacity:.8}
+.kp{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px;font-size:12px}.kp b{display:block;font-size:16px}.kp span{color:var(--mut)}
+.set{display:flex;flex-wrap:wrap;gap:10px;align-items:end;font-size:12px;color:var(--mut)}
+.set label{display:flex;flex-direction:column;gap:3px}
+input,select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+dialog{border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);max-width:360px}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.demo{background:var(--yel-s);color:var(--yel);border:1px solid var(--yel);border-radius:6px;padding:6px 10px;font-size:12px;margin-bottom:12px}
+@media(max-width:1100px){.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.app{grid-template-columns:1fr}nav{flex-direction:row;flex-wrap:wrap;align-items:center;padding:10px}nav .logo{margin:0 10px 0 0}nav small{display:none}.g4,.g2{grid-template-columns:1fr}.kp{grid-template-columns:1fr 1fr}main{padding:10px}}
+</style></head>
+<body><div class="app">
+<nav><div class="logo"><svg width="22" height="26" viewBox="0 0 22 26"><path d="M11 1C6 9 2 13 2 17a9 9 0 0 0 18 0c0-4-4-8-9-16z" fill="#4aa3ff"/></svg>AquaCycle-X</div>
+<a class="on" href="#dashboard">Dashboard</a><a href="#analytics">Analytics</a><a href="#logs">Logs</a><a href="#settings">Settings</a><small>Smart Rainwater Filter Monitoring v1.0</small></nav>
+<main>
+<header><div><h1>AquaCycle-X</h1><p>Smart Automatic Rainwater Filter Monitoring System</p></div>
+<div class="chips"><span class="chip" id="hConn">ESP32 Disconnected</span><span class="chip plain" id="hMode">Mode: Automatic</span><span class="chip" id="hLive">Demo Mode</span><span class="chip plain" id="hClock">--</span></div></header>
+<div class="demo" id="demoBar"><b>DEMO MODE:</b> all values are simulated and are not hardware data. Switch to Live Mode to read the ESP32.</div>
+
+<section class="card" id="settings" style="margin-bottom:12px"><div class="set">
+<label>Data source<select id="src"><option value="demo">Demo (simulated)</option><option value="live">Live (ESP32 HTTP API)</option></select></label>
+<label>ESP32 base URL<input id="url" size="24" placeholder="http://192.168.1.50"></label>
+<label>Poll (s)<input id="poll" type="number" min="1" max="60" value="2" style="width:64px"></label>
+<label>Chamber height (cm)<input id="tank" type="number" min="1" step="0.5" placeholder="not set" style="width:100px"></label>
+<label>Turbidity calibration NTU = a·ADC + b<span><input id="ca" type="number" step="any" placeholder="a" style="width:70px"> <input id="cb" type="number" step="any" placeholder="b" style="width:70px"></span></label>
+<button id="apply" class="p">Apply</button>
+<span>Live API: <code>GET /api/data</code> → <code>{clog, adc, dist, servo, wiper, cleaning, auto, cycles}</code>; <code>POST /api/command</code> → <code>{cmd}</code></span></div></section>
+
+<div class="grid g4" id="dashboard">
+<div class="card"><h2>Filter Clogging Monitoring</h2><div class="big" id="clog">N/A</div><div id="clogChip" class="chip" style="margin:6px 0">N/A</div>
+<div class="bar"><i id="clogBar"></i><u style="left:70%"></u><u class="c" style="left:85%"></u></div>
+<div class="row"><span>0%</span><span>100%</span></div>
+<div class="row"><span>Condition</span><b id="cond">N/A</b></div><div class="row"><span>Cleaning threshold</span><b>70%</b></div><div class="row"><span>Critical threshold</span><b>85%</b></div><div class="row"><span>Last measurement</span><b id="clogT">N/A</b></div>
+<div class="row"><span>Basis</span><b>Estimated (uncalibrated)</b></div></div>
+
+<div class="card"><h2>Turbidity Sensor</h2><div class="big"><span id="adc">N/A</span> <small>ADC</small></div>
+<div class="row"><span>Calibrated</span><b id="ntu">N/A</b></div><div class="row"><span>Water condition</span><b id="wcond">N/A</b></div><div class="row"><span>Previous reading</span><b id="padc">N/A</b></div>
+<svg class="sp" id="sTurb" viewBox="0 0 200 70" preserveAspectRatio="none"><polyline points=""/></svg></div>
+
+<div class="card"><h2>Ultrasonic Water Level</h2><div class="big"><span id="dist">N/A</span> <small>cm to surface</small></div>
+<div class="row"><span>Water level</span><b id="lvl">N/A</b></div><div class="row"><span>Tank filling</span><b id="fill">N/A (set chamber height)</b></div><div class="row"><span>Status</span><b id="lstat">N/A</b></div><div class="row"><span>Last update</span><b id="lT">N/A</b></div></div>
+
+<div class="card"><h2>Servo Wiper Monitoring</h2><div class="big"><span id="servo">N/A</span><small> deg</small></div>
+<div class="row"><span>Wiper</span><b id="wip">N/A</b></div><div class="row"><span>Cleaning operation</span><b id="cop">N/A</b></div><div class="row"><span>Operating mode</span><b id="omode">N/A</b></div><div class="row"><span>Last cleaning</span><b id="lastC">N/A</b></div><div class="row"><span>Total cycles</span><b id="cyc">N/A</b></div></div>
+</div>
+
+<div class="grid g2">
+<div class="card"><h2>Automatic Cleaning Control</h2>
+<div class="row"><span>Automatic cleaning</span><b id="autoS">N/A</b></div><div class="row"><span>Activation / critical</span><b>70% / 85%</b></div>
+<div class="row"><span>Current condition</span><b id="ccond">N/A</b></div><div class="row"><span>Started</span><b id="cStart">N/A</b></div><div class="row"><span>Completed</span><b id="cEnd">N/A</b></div><div class="row"><span>Result</span><b id="cRes">N/A</b></div>
+<div class="ctl"><button class="p" id="bStart">START CLEANING</button><button class="d" id="bStop">STOP CLEANING</button><button id="bOn">ENABLE AUTO MODE</button><button id="bOff">DISABLE AUTO MODE</button></div>
+<div id="cmdMsg" style="font-size:12px;color:var(--mut);margin-top:6px"></div></div>
+<div class="card"><h2>System Working Status</h2><div class="flow" id="flow"></div>
+<h2 style="margin-top:14px">Alerts and Notifications</h2><ul class="al" id="alerts"></ul></div></div>
+
+<div class="card" id="analytics" style="margin-bottom:12px"><h2>Performance Analytics</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:0">
+<div><div class="row"><span>Clogging % vs time</span></div><svg class="sp" id="gC" viewBox="0 0 200 70" preserveAspectRatio="none"><polyline/></svg></div>
+<div><div class="row"><span>Turbidity ADC vs time</span></div><svg class="sp" id="gT" viewBox="0 0 200 70" preserveAspectRatio="none"><polyline/></svg></div>
+<div><div class="row"><span>Water level (cm) vs time</span></div><svg class="sp" id="gL" viewBox="0 0 200 70" preserveAspectRatio="none"><polyline/></svg></div></div>
+<div class="kp"><div><span>Cleanings today</span><b id="kN">N/A</b></div><div><span>Avg clog before</span><b id="kB">N/A</b></div><div><span>Avg clog after</span><b id="kA">N/A</b></div><div><span>Success rate</span><b id="kS">N/A</b></div><div><span>Last success</span><b id="kL">N/A</b></div></div></div>
+
+<div class="card" id="logs"><h2>Live Data Table</h2><div class="tw"><table><thead><tr><th>Timestamp</th><th>Clogging %</th><th>Turbidity ADC</th><th>Water level</th><th>Servo angle</th><th>Wiper</th><th>System condition</th></tr></thead><tbody id="tb"></tbody></table></div>
+<div class="ctl"><button id="csv">Export CSV</button><button id="clr" class="d">Clear</button></div></div>
+</main></div>
+
+<dialog id="dlg"><p><b>Start manual cleaning?</b></p><p>The servo wiper will sweep the filter mesh. Make sure nothing is blocking the wiper.</p><form method="dialog" style="display:flex;gap:8px;justify-content:flex-end"><button value="no">Cancel</button><button value="yes" class="p">Start cleaning</button></form></dialog>
+
+<script>
+const $=id=>document.getElementById(id);
+const S={src:"demo",url:"",poll:2,tank:null,ca:null,cb:null,hist:[],alerts:[],last:null,lastRx:0,prevAdc:null,
+ clean:{n:0,before:[],after:[],ok:0,lastOk:null,lastT:null,start:null,end:null,res:"Pending"},sim:{clog:42,adc:1700,dist:14,servo:0,wiper:false,cleaning:false,auto:true,cycles:0,step:0},timer:null};
+const fmt=d=>d.toLocaleTimeString([], {hour12:false});
+const num=v=>(typeof v==="number"&&isFinite(v))?v:null;
+function cls(c){return c==null?["N/A",""]:c>=85?["Critical","r"]:c>=70?["High","y"]:c>=40?["Moderate","y"]:["Clean","g"]}
+function alertAdd(txt,lv){S.alerts.unshift({txt,lv,t:fmt(new Date())});S.alerts=S.alerts.slice(0,30);drawAlerts()}
+function drawAlerts(){$("alerts").innerHTML=S.alerts.length?S.alerts.map(a=>`<li class="${a.lv}"><span>${a.txt}</span><time>${a.t}</time></li>`).join(""):'<li class="g">No alerts. System normal.</li>'}
+function tick(){ // demo simulation only
+ const s=S.sim;s.adc=Math.round(Math.max(900,Math.min(2600,s.adc+(Math.random()-.4)*40)));
+ if(s.cleaning){s.step++;s.servo=Math.round(90+90*Math.sin(s.step*1.1));s.wiper=true;s.clog=Math.max(8,s.clog-9);
+  if(s.step>=8){s.cleaning=false;s.wiper=false;s.servo=0;s.step=0;s.cycles++;finish(s.clog<30)}}
+ else{s.clog=Math.min(100,s.clog+1.6+Math.random());s.dist=Math.round((14+Math.sin(Date.now()/9000)*2)*10)/10;
+  if(s.auto&&s.clog>=70)begin("Automatic cleaning started")}
+ ingest({clog:Math.round(s.clog),adc:s.adc,dist:s.dist,servo:s.servo,wiper:s.wiper,cleaning:s.cleaning,auto:s.auto,cycles:s.cycles})}
+function begin(msg){const s=S.sim;if(s.cleaning)return;s.cleaning=true;s.step=0;S.clean.before.push(Math.round(s.clog));S.clean.start=fmt(new Date());S.clean.end=null;S.clean.res="Pending";alertAdd(msg,"y")}
+function finish(ok){const c=S.clean;c.n++;c.after.push(Math.round(S.sim.clog));c.end=fmt(new Date());c.lastT=c.end;c.res=ok?"Successful":"Unsuccessful";if(ok){c.ok++;c.lastOk=c.end}alertAdd(ok?"Cleaning completed":"Cleaning unsuccessful",ok?"g":"r")}
+async function pollLive(){
+ if(!S.url){render(null);return}
+ try{const r=await fetch(S.url.replace(/\/$/,"")+"/api/data",{cache:"no-store"});if(!r.ok)throw 0;ingest(await r.json())}
+ catch(e){render(null)}}
+let wasCleaning=false,wasCon=true,errT=false,errU=false;
+function ingest(d){S.lastRx=Date.now();const c=num(d.clog),a=num(d.adc),di=num(d.dist);
+ if(S.last&&S.last.adc!=null)S.prevAdc=S.last.adc;
+ const lvl=(di!=null&&S.tank!=null)?Math.max(0,S.tank-di):null;
+ const row={t:new Date(),clog:c,adc:a,dist:di,lvl,servo:num(d.servo),wiper:d.wiper,cleaning:d.cleaning,auto:d.auto,cycles:num(d.cycles)};
+ S.last=row;S.hist.push(row);S.hist=S.hist.slice(-120);
+ if(S.src==="live"){ if(d.cleaning&&!wasCleaning){S.clean.start=fmt(new Date());S.clean.res="Pending";S.clean.before.push(c);alertAdd("Automatic cleaning started","y")}
+  if(!d.cleaning&&wasCleaning){S.clean.end=fmt(new Date());const ok=c!=null&&c<40;S.clean.n++;S.clean.after.push(c);S.clean.res=ok?"Successful":"Unsuccessful";S.clean.lastT=S.clean.end;if(ok){S.clean.ok++;S.clean.lastOk=S.clean.end}alertAdd(ok?"Cleaning completed":"Cleaning unsuccessful",ok?"g":"r")}
+  wasCleaning=!!d.cleaning;
+  if(a==null&&!errT){errT=true;alertAdd("Turbidity sensor error","r")}if(a!=null)errT=false;
+  if(di==null&&!errU){errU=true;alertAdd("Ultrasonic sensor error","r")}if(di!=null)errU=false}
+ if(c!=null&&c>=85&&!(S._cr)){S._cr=1;alertAdd("Critical filter blockage","r")}else if(c!=null&&c>=70&&!(S._hi)){S._hi=1;alertAdd("High clogging detected ("+c+"%)","y")}
+ if(c!=null&&c<60){S._hi=0;S._cr=0}
+ render(row)}
+const avg=a=>{const v=a.filter(x=>x!=null);return v.length?Math.round(v.reduce((x,y)=>x+y,0)/v.length)+"%":"N/A"};
+function spark(id,key,max){const pts=S.hist.map(h=>h[key]).filter(v=>v!=null).slice(-60);const el=document.querySelector("#"+id+" polyline");
+ if(pts.length<2){el.setAttribute("points","");return}const mx=max||Math.max(...pts)*1.1||1,mn=max?0:Math.min(...pts)*.9;
+ el.setAttribute("points",pts.map((v,i)=>(i/(pts.length-1)*200).toFixed(1)+","+(66-(v-mn)/((mx-mn)||1)*62).toFixed(1)).join(" "))}
+const set=(id,v)=>$(id).textContent=v==null?"N/A":v;
+function render(r){
+ const live=S.src==="live",con=live?(Date.now()-S.lastRx<Math.max(6000,S.poll*3000)):true;
+ const hc=$("hConn");hc.textContent=live?(con?"ESP32 Connected":"ESP32 Disconnected"):"ESP32 not used (demo)";hc.className="chip "+(live?(con?"g":"r"):"y");
+ if(live&&!con&&wasCon)alertAdd("ESP32 disconnected","r");if(con&&!wasCon)alertAdd("ESP32 reconnected","g");wasCon=con;
+ $("hLive").textContent=live?"Live Mode":"Demo Mode";$("hLive").className="chip "+(live?"g":"y");$("demoBar").style.display=live?"none":"block";
+ $("hClock").textContent=new Date().toLocaleString([], {hour12:false});
+ if(live&&!con)r=null;
+ const t=r?fmt(r.t):"N/A";const [cl,cc]=cls(r?r.clog:null);
+ set("clog",r&&r.clog!=null?r.clog+"%":null);$("clogChip").textContent=cl;$("clogChip").className="chip "+cc;$("clogBar").style.width=(r&&r.clog!=null?r.clog:0)+"%";$("clogBar").style.background=cc==="r"?"var(--red)":cc==="y"?"var(--yel)":"var(--blue)";
+ set("cond",r&&r.clog!=null?(r.clog>=70?"Needs cleaning":r.clog>=40?"Partially blocked":"Flowing freely"):null);set("clogT",t);
+ set("adc",r?r.adc:null);set("padc",S.prevAdc!=null&&r?S.prevAdc+" ADC":null);
+ const ntu=r&&r.adc!=null&&S.ca!=null&&S.cb!=null?(S.ca*r.adc+S.cb).toFixed(1)+" NTU":null;set("ntu",ntu);
+ set("wcond",r&&r.adc!=null?(r.adc<1500?"Clear (indicative)":r.adc<2200?"Cloudy (indicative)":"Very turbid (indicative)"):null);
+ set("dist",r?r.dist:null);set("lvl",r&&r.lvl!=null?r.lvl.toFixed(1)+" cm":null);
+ set("fill",r&&r.lvl!=null?Math.round(r.lvl/S.tank*100)+"%":"N/A (set chamber height)");
+ set("lstat",r&&r.lvl!=null?(r.lvl/S.tank>.9?"High":r.lvl/S.tank<.1?"Low":"Normal"):null);set("lT",t);
+ set("servo",r?r.servo:null);set("wip",r&&r.wiper!=null?(r.wiper?"ON":"OFF"):null);set("cop",r&&r.cleaning!=null?(r.cleaning?"Active":"Inactive"):null);
+ const m=r&&r.auto!=null?(r.auto?"Automatic":"Manual"):null;set("omode",m);$("hMode").textContent="Mode: "+(m||"N/A");
+ set("lastC",S.clean.lastT);set("cyc",r&&r.cycles!=null?r.cycles:null);
+ set("autoS",r&&r.auto!=null?(r.auto?"ENABLED":"DISABLED"):null);
+ set("ccond",r&&r.cleaning!=null?(r.cleaning?"Cleaning in progress":"Not cleaning"):null);set("cStart",S.clean.start);set("cEnd",S.clean.end);set("cRes",S.clean.res);
+ const stage=!r?-1:r.cleaning?4:(r.clog!=null&&r.clog>=70)?3:2;
+ $("flow").innerHTML=["Rainwater inlet","Stainless-steel filter","Clogging monitoring","ESP32 processing","Servo wiper cleaning","Filter ready"].map((n,i)=>`<span class="st ${i===stage?"on":""}">${n}</span>${i<5?'<span class="ar">&rarr;</span>':""}`).join("");
+ spark("sTurb","adc");spark("gC","clog",100);spark("gT","adc");spark("gL","lvl");
+ set("kN",S.clean.n);set("kB",avg(S.clean.before));set("kA",avg(S.clean.after));set("kS",S.clean.n?Math.round(S.clean.ok/S.clean.n*100)+"%":null);set("kL",S.clean.lastOk);
+ if(r&&S.hist[S.hist.length-1]===r&&r._row!==1){r._row=1;const tr=document.createElement("tr");
+  tr.innerHTML=`<td>${t}</td><td>${r.clog==null?"N/A":r.clog+"%"}</td><td>${r.adc==null?"N/A":r.adc}</td><td>${r.lvl==null?"N/A":r.lvl.toFixed(1)+" cm"}</td><td>${r.servo==null?"N/A":r.servo+"°"}</td><td>${r.wiper==null?"N/A":r.wiper?"ON":"OFF"}</td><td>${cl}</td>`;
+  $("tb").prepend(tr);while($("tb").rows.length>60)$("tb").deleteRow(-1)}}
+async function cmd(c){const live=S.src==="live",s=S.sim;
+ if(!live){if(c==="start")begin("Manual cleaning started");if(c==="stop"&&s.cleaning){s.cleaning=false;s.wiper=false;s.servo=0;S.clean.res="Unsuccessful";S.clean.end=fmt(new Date());alertAdd("Cleaning stopped manually","y")}
+  if(c==="auto_on")s.auto=true;if(c==="auto_off")s.auto=false;$("cmdMsg").textContent="Demo: command applied to simulation only.";return}
+ try{const r=await fetch(S.url.replace(/\/$/,"")+"/api/command",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({cmd:c})});
+  if(!r.ok)throw 0;$("cmdMsg").textContent="Sent "+c+" at "+fmt(new Date())}catch(e){$("cmdMsg").textContent="Command failed: ESP32 not reachable.";alertAdd("Command failed: "+c,"r")}}
+$("bStart").onclick=()=>$("dlg").showModal();$("dlg").addEventListener("close",()=>{if($("dlg").returnValue==="yes")cmd("start")});
+$("bStop").onclick=()=>cmd("stop");$("bOn").onclick=()=>cmd("auto_on");$("bOff").onclick=()=>cmd("auto_off");
+$("clr").onclick=()=>{S.hist=[];$("tb").innerHTML=""};
+$("csv").onclick=()=>{const rows=["time,clog,adc,level_cm,servo,wiper,mode"].concat(S.hist.map(h=>[h.t.toISOString(),h.clog,h.adc,h.lvl,h.servo,h.wiper,S.src].join(",")));const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.join("\n")],{type:"text/csv"}));a.download="aquacycle-x.csv";a.click()};
+function apply(){S.src=$("src").value;S.url=$("url").value.trim();S.poll=Math.max(1,+$("poll").value||2);S.tank=$("tank").value?+$("tank").value:null;S.ca=$("ca").value!==""?+$("ca").value:null;S.cb=$("cb").value!==""?+$("cb").value:null;
+ S.hist=[];$("tb").innerHTML="";S.last=null;S.lastRx=0;
+ try{localStorage.setItem("aqx",JSON.stringify({url:S.url,tank:S.tank,poll:S.poll,ca:S.ca,cb:S.cb}))}catch(e){}
+ clearInterval(S.timer);S.timer=setInterval(S.src==="demo"?tick:pollLive,S.poll*1000);S.src==="demo"?tick():pollLive()}
+$("apply").onclick=apply;
+try{const v=JSON.parse(localStorage.getItem("aqx")||"null");if(v){$("url").value=v.url||"";$("tank").value=v.tank??"";$("poll").value=v.poll||2;$("ca").value=v.ca??"";$("cb").value=v.cb??""}}catch(e){}
+setInterval(()=>$("hClock").textContent=new Date().toLocaleString([], {hour12:false}),1000);
+drawAlerts();apply();
+</script></body></html>
