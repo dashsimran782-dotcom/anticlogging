@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquaCycle-X | Smart Rainwater Filter</title>
+<style>
+:root{--navy:#10213b;--blue:#1675df;--cyan:#17a9df;--green:#16a36a;--orange:#f2a52b;--red:#df5360;--ink:#17243a;--muted:#68758a;--line:#e4eaf2;--bg:#f4f7fc;--card:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 Inter,Segoe UI,Arial,sans-serif}
+button,input{font:inherit}.app{min-height:100vh;display:grid;grid-template-columns:160px 1fr}
+.sidebar{background:var(--navy);color:#dce8f8;padding:22px 12px;display:flex;flex-direction:column;gap:22px}.brand{text-align:center;font-weight:800;font-size:17px;margin-bottom:4px}.drop{font-size:29px;color:#55c4ff}.nav{display:grid;gap:8px}.nav button{border:0;background:transparent;color:#d5e0ef;text-align:left;padding:12px;border-radius:9px;cursor:pointer}.nav button.active,.nav button:hover{background:#1768c8;color:#fff}.sidefoot{margin-top:auto;color:#aab9cc;font-size:11px;padding:8px}
+main{min-width:0;padding:20px 22px 28px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}.title h1{font-size:24px;margin:0 0 3px}.title p{margin:0;color:var(--muted);font-size:12px}.topright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.pill{border:1px solid var(--line);background:#fff;border-radius:30px;padding:8px 12px;font-size:12px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#aab4c2;margin-right:6px}.dot.green{background:#16a36a}.dot.orange{background:#f2a52b}.dot.red{background:#df5360}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}.grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;margin-bottom:12px}.gridbottom{display:grid;grid-template-columns:1.1fr 1fr;gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px;box-shadow:0 3px 14px #1b35500a;min-width:0}.card h2{font-size:15px;margin:0 0 14px;display:flex;align-items:center;gap:8px}.card h3{font-size:12px;color:var(--muted);font-weight:600;margin:0 0 10px}.metric{font-size:29px;font-weight:800;letter-spacing:-.6px}.sub{font-size:11px;color:var(--muted);margin-top:5px}.tag{display:inline-flex;align-items:center;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:700;background:#e9f8f0;color:#087b4c}.tag.warn{background:#fff3dc;color:#a76400}.tag.bad{background:#ffebed;color:#b52c3b}.tag.blue{background:#e8f2ff;color:#125db5}.sensorhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.bigrow{display:flex;justify-content:space-between;align-items:center;gap:8px}.ring{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--blue) 0 68%,#e7edf6 68% 100%);position:relative;flex-shrink:0}.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}.ring b{position:relative;font-size:21px}.bar{height:8px;border-radius:10px;background:#e9eef6;overflow:hidden;margin:12px 0 5px}.bar span{display:block;height:100%;width:68%;background:var(--blue);border-radius:10px}.mini{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}.split{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:12px}.split div{text-align:center;border-right:1px solid var(--line);font-size:10px;color:var(--muted)}.split div:last-child{border:0}.split b{display:block;color:var(--ink);font-size:12px;margin-top:3px}
+.chart{width:100%;height:142px;display:block}.legend{display:flex;gap:14px;font-size:11px;color:var(--muted)}.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:14px}.controlbox{border-right:1px solid var(--line);padding-right:14px}.range-row{display:flex;justify-content:space-between;font-size:12px;margin:12px 0 5px}.range{width:100%;accent-color:var(--blue)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.btn{border:1px solid #cbd5e2;background:#fff;color:#24344b;border-radius:7px;padding:9px 12px;font-size:11px;font-weight:700;cursor:pointer}.btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.btn.danger{background:#fff1f2;color:#b52c3b;border-color:#f2c5ca}.btn:disabled{opacity:.45;cursor:not-allowed}.condition{border-radius:9px;background:#eef5ff;padding:15px;text-align:center;font-weight:800;margin:10px 0;color:#1558a4}.condition.cleaning{background:#fff3dc;color:#9a5b00}.condition.stopped{background:#f0f2f5;color:#5d6878}
+.analytics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.analytics .mini-card{border:1px solid var(--line);border-radius:9px;padding:10px}.mini-card strong{font-size:19px;display:block;margin-top:7px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:11px;white-space:nowrap}th,td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--line)}th{background:#f7f9fc;color:#5c6b80;font-weight:700}td{color:#26354a}.ok{color:var(--green);font-weight:700}.alertlist{display:grid;gap:9px}.alert{padding:9px 10px;border-radius:8px;background:#fff8eb;font-size:12px}.alert.good{background:#effaf4}.flow{display:flex;align-items:center;justify-content:space-between;gap:4px;text-align:center}.step{flex:1;min-width:0;font-size:10px;color:#40516a}.step .ico{width:31px;height:31px;border-radius:50%;background:#e8f2ff;color:#1768c8;display:grid;place-items:center;margin:0 auto 5px;font-size:15px;font-weight:800}.arrow{color:#9ba9bb}.smallnote{font-size:10px;color:var(--muted);margin-top:10px}
+@media(max-width:1100px){.grid4{grid-template-columns:repeat(2,1fr)}.grid2,.gridbottom{grid-template-columns:1fr}}
+@media(max-width:650px){.app{grid-template-columns:1fr}.sidebar{padding:10px;display:block}.brand{display:inline-block;margin-right:14px}.nav{display:flex;overflow:auto;margin-top:10px}.nav button{white-space:nowrap;padding:9px}.sidefoot{display:none}main{padding:13px}.grid4{gap:8px}.card{padding:12px}.metric{font-size:23px}.controls{grid-template-columns:1fr}.controlbox{border:0;padding:0}.analytics{grid-template-columns:1fr 1fr}.topright{gap:6px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="drop">💧</div>AquaCycle-X</div>
+  <nav class="nav">
+    <button class="active">⌂ &nbsp; Dashboard</button><button>▥ &nbsp; Analytics</button><button>▤ &nbsp; Logs</button><button>⚙ &nbsp; Settings</button><button>ⓘ &nbsp; About</button>
+  </nav>
+  <div class="sidefoot">Smart Rainwater<br>Filter Monitoring<br>Dashboard v1.0</div>
+</aside>
+<main>
+<header class="top">
+  <div class="title"><h1>AquaCycle-X</h1><p>Smart Rainwater Filter Monitoring System</p></div>
+  <div class="topright">
+    <span class="pill"><i class="dot" id="connectionDot"></i><b id="connectionText">Demo Preview</b></span>
+    <span class="pill">Mode: <b id="modeLabel">Automatic</b></span>
+    <span class="pill"><i class="dot green"></i>Dashboard Preview</span>
+    <span class="pill" id="clock">--</span>
+    <span class="pill"><i class="dot green"></i>System UI Ready</span>
+  </div>
+</header>
+
+<section class="grid4">
+ <article class="card">
+  <div class="sensorhead"><h2>◉ Filter Clogging Monitoring</h2><span>›</span></div>
+  <div class="bigrow"><div class="ring" id="clogRing"><b id="clogPercent">68%</b></div><div><span class="tag warn" id="clogBadge">⚠ Moderate–High</span><p style="margin:9px 0 3px">Filter Condition</p><b id="clogCondition">Possible clogging</b></div></div>
+  <div class="bar"><span id="clogBar"></span></div><div class="mini"><span>0%</span><span>100%</span></div>
+  <div class="split"><div>Warning<b>70%</b></div><div>Critical<b>85%</b></div><div>Updated<b id="clogTime">--</b></div></div>
+ </article>
+ <article class="card">
+  <div class="sensorhead"><h2>💧 Ultrasonic Sensor 1</h2><span>INLET</span></div>
+  <div class="metric" id="inletValue">-- cm</div><div class="sub">Distance from sensor to water surface</div>
+  <span class="tag blue" id="inletState">Waiting for data</span>
+  <svg class="chart" viewBox="0 0 300 115" preserveAspectRatio="none"><path id="inletPath" d="M0 85 L300 85" fill="none" stroke="#1675df" stroke-width="2.5"/></svg>
+  <div class="mini"><span>Sensor 1 · Before filter</span><b id="inletUpdated">--</b></div>
+ </article>
+ <article class="card">
+  <div class="sensorhead"><h2>〰 Ultrasonic Sensor 2</h2><span>OUTLET</span></div>
+  <div class="metric" id="outletValue">-- cm</div><div class="sub">Distance from sensor to water surface</div>
+  <span class="tag blue" id="outletState">Waiting for data</span>
+  <svg class="chart" viewBox="0 0 300 115" preserveAspectRatio="none"><path id="outletPath" d="M0 85 L300 85" fill="none" stroke="#16a36a" stroke-width="2.5"/></svg>
+  <div class="mini"><span>Sensor 2 · After filter</span><b id="outletUpdated">--</b></div>
+ </article>
+ <article class="card">
+  <div class="sensorhead"><h2>⚙ Servo Wiper Monitoring</h2><span>›</span></div>
+  <div class="metric" id="servoAngle">0°</div><div class="sub">MG996R Servo position</div>
+  <span class="tag" id="wiperBadge">Idle</span>
+  <p style="margin:10px 0 8px">Cleaning: <b id="wiperState">Inactive</b></p>
+  <div class="bar"><span id="servoBar" style="width:0%;background:#16a36a"></span></div>
+  <div class="mini"><span>0°</span><span>180°</span></div>
+  <div class="split"><div>Last cleaning<b id="lastClean">N/A</b></div><div>Cycles<b id="cycles">0</b></div><div>Auto mode<b id="autoState">ON</b></div></div>
+ </article>
+</section>
+
+<section class="grid2">
+ <article class="card">
+  <h2>🧹 Automatic Cleaning Control</h2>
+  <div class="controls">
+   <div class="controlbox">
+    <div class="range-row"><span>Warning threshold</span><b id="warnValue">70%</b></div><input class="range" id="warnRange" type="range" min="30" max="95" value="70">
+    <div class="range-row"><span>Critical threshold</span><b id="criticalValue">85%</b></div><input class="range" id="criticalRange" type="range" min="40" max="100" value="85">
+    <div class="range-row"><span>Auto cleaning</span><b id="autoText">ENABLED</b></div>
+   </div>
+   <div>
+    <div class="sub">Current cleaning condition</div>
+    <div class="condition" id="cleanCondition">Not cleaning</div>
+    <div class="sub">Detection: <b id="detectionText">Monitoring enabled</b></div>
+    <div class="sub" style="margin-top:7px">Last result: <b id="lastResult">No cleaning yet</b></div>
+   </div>
+  </div>
+  <div class="actions">
+   <button class="btn primary" id="startBtn">▶ START CLEANING</button>
+   <button class="btn danger" id="stopBtn">■ STOP CLEANING</button>
+   <button class="btn" id="autoBtn">✓ ENABLE AUTO MODE</button>
+   <button class="btn" id="disableBtn">⊘ DISABLE AUTO MODE</button>
+  </div>
+  <p class="smallnote">Preview controls only. Hardware actions will be enabled after Arduino communication is connected.</p>
+ </article>
+ <article class="card">
+  <div class="sensorhead"><h2>▥ Performance Analytics</h2><span class="sub">Live preview</span></div>
+  <div class="analytics">
+   <div class="mini-card"><h3>Clogging estimate</h3><svg class="chart" viewBox="0 0 130 75"><path d="M3 62 L30 50 L55 47 L80 35 L105 22 L127 15" fill="none" stroke="#1675df" stroke-width="2.5"/></svg><strong id="aClog">68%</strong></div>
+   <div class="mini-card"><h3>Inlet distance</h3><svg class="chart" viewBox="0 0 130 75"><path d="M3 48 L30 45 L55 50 L80 34 L105 29 L127 22" fill="none" stroke="#16a36a" stroke-width="2.5"/></svg><strong id="aInlet">-- cm</strong></div>
+   <div class="mini-card"><h3>Outlet distance</h3><svg class="chart" viewBox="0 0 130 75"><path d="M3 55 L30 49 L55 43 L80 41 L105 27 L127 20" fill="none" stroke="#7956d8" stroke-width="2.5"/></svg><strong id="aOutlet">-- cm</strong></div>
+  </div>
+  <div class="split"><div>Cleaning cycles<b id="aCycles">0</b></div><div>Sensor count<b>2</b></div><div>Connection<b id="aConnect">Demo</b></div></div>
+ </article>
+</section>
+
+<section class="gridbottom">
+ <article class="card">
+  <div class="sensorhead"><h2>▤ Live Sensor History</h2><button class="btn" id="clearBtn">Clear preview logs</button></div>
+  <div class="tablewrap"><table><thead><tr><th>Time</th><th>Inlet (cm)</th><th>Outlet (cm)</th><th>Difference</th><th>Clogging</th><th>Wiper</th><th>System</th></tr></thead><tbody id="historyRows"><tr><td colspan="7">Waiting for readings…</td></tr></tbody></table></div>
+ </article>
+ <div style="display:grid;gap:12px;align-content:start">
+  <article class="card">
+   <h2>⌁ System Working Status</h2>
+   <div class="flow">
+    <div class="step"><div class="ico">💧</div>Rainwater<br>Inlet</div><span class="arrow">→</span>
+    <div class="step"><div class="ico">✓</div>Steel Mesh<br>Filter</div><span class="arrow">→</span>
+    <div class="step"><div class="ico">⌕</div>Clogging<br>Detection</div><span class="arrow">→</span>
+    <div class="step"><div class="ico">▣</div>Arduino<br>Processing</div><span class="arrow">→</span>
+    <div class="step"><div class="ico">⚙</div>Servo<br>Wiper</div><span class="arrow">→</span>
+    <div class="step"><div class="ico">✓</div>Filter<br>Ready</div>
+   </div>
+  </article>
+  <article class="card">
+   <h2>🔔 Alerts & Notifications</h2>
+   <div class="alertlist" id="alerts">
+    <div class="alert">ℹ Dashboard preview mode. Connect hardware in the next stage.</div>
+   </div>
+  </article>
+ </div>
+</section>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let autoEnabled=true, cleaning=false, cycles=0, lastCleaning='N/A', clog=68;
+let history=[];
+function time(){return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function updateClock(){$('clock').textContent=new Date().toLocaleString();}
+setInterval(updateClock,1000);updateClock();
+function log(msg,type='info'){
+ const el=document.createElement('div');el.className='alert '+(type==='good'?'good':'');el.textContent=time()+' · '+msg;$('alerts').prepend(el);
+ while($('alerts').children.length>5)$('alerts').lastChild.remove();
+}
+function setCleaning(on){
+ cleaning=on;$('wiperState').textContent=on?'Active':'Inactive';$('wiperBadge').textContent=on?'Cleaning':'Idle';$('wiperBadge').className='tag '+(on?'warn':'');$('cleanCondition').textContent=on?'Wiper is moving':'Not cleaning';$('cleanCondition').className='condition '+(on?'cleaning':'');$('detectionText').textContent=on?'Cleaning in progress':(autoEnabled?'Monitoring enabled':'Monitoring stopped');
+ if(on){$('servoAngle').textContent='160°';$('servoBar').style.width='89%';log('Wiper cleaning started','info');}
+ else {$('servoAngle').textContent='0°';$('servoBar').style.width='0%';}
+}
+function startCleaning(){
+ if(cleaning)return;setCleaning(true);
+ setTimeout(()=>{setCleaning(false);cycles++;lastCleaning=time();$('cycles').textContent=cycles;$('aCycles').textContent=cycles;$('lastClean').textContent=lastCleaning;$('lastResult').textContent='Demo cycle completed';log('Cleaning cycle completed (preview)','good');},2500);
+}
+$('startBtn').onclick=()=>startCleaning();
+$('stopBtn').onclick=()=>{if(cleaning){setCleaning(false);log('Cleaning stopped by user');$('lastResult').textContent='Stopped manually';}};
+$('autoBtn').onclick=()=>{autoEnabled=true;syncAuto();log('Automatic clogging detection enabled','good');};
+$('disableBtn').onclick=()=>{autoEnabled=false;syncAuto();log('Automatic clogging detection disabled');};
+function syncAuto(){$('autoText').textContent=autoEnabled?'ENABLED':'DISABLED';$('autoState').textContent=autoEnabled?'ON':'OFF';$('modeLabel').textContent=autoEnabled?'Automatic':'Manual';$('detectionText').textContent=autoEnabled?'Monitoring enabled':'Monitoring stopped';}
+$('warnRange').oninput=e=>$('warnValue').textContent=e.target.value+'%';
+$('criticalRange').oninput=e=>$('criticalValue').textContent=e.target.value+'%';
+$('clearBtn').onclick=()=>{$('historyRows').innerHTML='<tr><td colspan="7">No preview logs.</td></tr>';history=[];log('Preview history cleared');};
+function drawSpark(id,vals,color){let w=300,h=115,pad=8,min=Math.min(...vals)-2,max=Math.max(...vals)+2;if(max<=min)max=min+1;let d=vals.map((v,i)=>`${i?'L':'M'} ${(i/(Math.max(1,vals.length-1))*(w-2*pad)+pad).toFixed(1)} ${(h-pad-(v-min)/(max-min)*(h-2*pad)).toFixed(1)}`).join(' ');$(id).setAttribute('d',d);$(id).setAttribute('stroke',color);}
+function updateReadings(inlet,outlet){
+ $('inletValue').textContent=inlet.toFixed(1)+' cm';$('outletValue').textContent=outlet.toFixed(1)+' cm';$('inletState').textContent='Reading received';$('outletState').textContent='Reading received';$('inletUpdated').textContent=time();$('outletUpdated').textContent=time();
+ $('aInlet').textContent=inlet.toFixed(1)+' cm';$('aOutlet').textContent=outlet.toFixed(1)+' cm';
+ const diff=outlet-inlet;
+ clog=Math.max(0,Math.min(100,Math.round((diff/20)*100)));
+ $('clogPercent').textContent=clog+'%';$('clogBar').style.width=clog+'%';$('aClog').textContent=clog+'%';$('clogTime').textContent=time();
+ const warning=Number($('warnRange').value),critical=Number($('criticalRange').value);
+ $('clogCondition').textContent=clog>=critical?'Critical':clog>=warning?'Possible clogging':'Normal';
+ $('clogBadge').textContent=clog>=critical?'⚠ Critical':clog>=warning?'⚠ Warning':'✓ Normal';
+ $('clogBadge').className='tag '+(clog>=critical?'bad':clog>=warning?'warn':'');
+ if(clog>=warning&&autoEnabled&&!cleaning){log('Possible clogging threshold crossed');startCleaning();}
+ $('difference').textContent=diff.toFixed(1)+' cm';
+ const inletVals=window.ivals||[];inletVals.push(inlet);window.ivals=inletVals.slice(-12);
+ const outletVals=window.ovals||[];outletVals.push(outlet);window.ovals=outletVals.slice(-12);
+ drawSpark('inletPath',window.ivals,'#1675df');drawSpark('outletPath',window.ovals,'#16a36a');
+ const row={t:time(),i:inlet.toFixed(1),o:outlet.toFixed(1),d:diff.toFixed(1),c:clog+'%',w:cleaning?'ON':'OFF',s:'Preview'};
+ history.unshift(row);history=history.slice(0,12);
+ $('historyRows').innerHTML=history.map(r=>`<tr><td>${r.t}</td><td>${r.i}</td><td>${r.o}</td><td>${r.d}</td><td>${r.c}</td><td>${r.w}</td><td>${r.s}</td></tr>`).join('');
+}
+function demoTick(){if(window.demoPaused)return;let a=18+Math.random()*2,b=25+Math.random()*3;updateReadings(a,b);}
+setInterval(demoTick,3500);demoTick();
+</script>
+</body>
+</html>
